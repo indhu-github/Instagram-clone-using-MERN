@@ -39,7 +39,7 @@ const Signup = () => {
           // console.log("error");
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          console.log("message");
+          //console.log("message");
           history.push("/signin");
         }
       });

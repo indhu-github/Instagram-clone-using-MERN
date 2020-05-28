@@ -9,7 +9,7 @@ const Profile = () => {
   const [showFollow, setShowFollow] = useState(
     state ? !state.followers.includes(userid) : true
   );
-  console.log(userid);
+  //console.log(userid);
   useEffect(() => {
     fetch(`/user/${userid}`, {
       headers: {
@@ -37,7 +37,7 @@ const Profile = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         dispatch({
           type: "UPDATE",
           payload: { following: data.following, followers: data.followers },
@@ -68,7 +68,7 @@ const Profile = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         dispatch({
           type: "UPDATE",
           payload: { following: data.following, followers: data.followers },
@@ -109,11 +109,11 @@ const Profile = () => {
                   borderRadius: "80px",
                 }}
                 src={userProfile.user.pic}
-                alt="nvfdjv"
               />
             </div>
             <div>
-              <h4>{state ? state.name : "loading"}</h4>
+              <h4>{userProfile.user.name}</h4>
+              <h5>{userProfile.user.email}</h5>
               <div
                 style={{
                   display: "flex",
@@ -121,31 +121,29 @@ const Profile = () => {
                   width: "108%",
                 }}
               >
-                <h4>{userProfile.user.name}</h4>
-                <h5>{userProfile.user.email}</h5>
                 <h6>{userProfile.posts.length} posts</h6>
                 <h6>{userProfile.user.followers.length} followers</h6>
-                <h6>{userProfile.user.following.length} followers</h6>
+                <h6>{userProfile.user.following.length} following</h6>
               </div>
+              {showFollow ? (
+                <button
+                  style={{ margin: "10px" }}
+                  className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                  onClick={() => followUser()}
+                >
+                  Follow
+                </button>
+              ) : (
+                <button
+                  style={{ margin: "10px" }}
+                  className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                  onClick={() => unfollowUser()}
+                >
+                  UnFollow
+                </button>
+              )}
             </div>
           </div>
-          {showFollow ? (
-            <button
-              style={{ margin: "10px" }}
-              className="btn waves-effect waves-light #64b5f6 blue darken-1"
-              onClick={() => followUser()}
-            >
-              Follow
-            </button>
-          ) : (
-            <button
-              style={{ margin: "10px" }}
-              className="btn waves-effect waves-light #64b5f6 blue darken-1"
-              onClick={() => unfollowUser()}
-            >
-              UnFollow
-            </button>
-          )}
 
           <div className="gallery">
             {userProfile.posts.map((item) => {

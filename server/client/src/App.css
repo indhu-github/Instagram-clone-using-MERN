@@ -30,6 +30,10 @@ h2 {
   height: max-content;
   margin: 26px auto;
 }
+.collection-item {
+  width: 100%;
+  color: black;
+}
 
 #toast-container {
   top: 30px !important;

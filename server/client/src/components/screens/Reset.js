@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { UserContext } from "../../App";
 import M from "materialize-css";
 
-const Signin = () => {
-  const { state, dispatch } = useContext(UserContext);
+const Reset = () => {
   const history = useHistory();
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const PostData = () => {
     if (
@@ -18,14 +15,12 @@ const Signin = () => {
       return;
     }
 
-    fetch("/signin", {
+    fetch("/reset-password", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
-        //Authorization: "Bearer" + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
-        password,
         email,
       }),
     })
@@ -33,18 +28,16 @@ const Signin = () => {
       .then((data) => {
         if (data.error) {
           M.toast({ html: data.error, classes: "#c62828 red darken-3" });
-          // console.log("error");
         } else {
-          localStorage.setItem("jwt", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          dispatch({ type: "USER", payload: data.user });
           M.toast({
-            html: "signedin success",
+            html: data.message,
             classes: "#43a047 green darken-1",
           });
-          //console.log("message");
-          history.push("/");
+          history.push("/signin");
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   return (
@@ -57,24 +50,15 @@ const Signin = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
         <button
           className="btn waves-effect waves-light #64b5f6 blue darken-1"
           onClick={() => PostData()}
         >
-          Login
+          Reset Password
         </button>
-        <h5>
-          <Link to="/signup">Dont have an account?</Link>
-        </h5>
       </div>
     </div>
   );
 };
 
-export default Signin;
+export default Reset;
